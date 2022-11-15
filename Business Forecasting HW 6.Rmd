@@ -1,0 +1,34 @@
+---
+title: "Homework 5"
+author: "Naga Asritha Narra"
+date: "2022-11-15"
+output: html_document
+---
+
+```{r}
+library(fpp)
+library(fpp2)
+library(forecast)
+AirPassengers
+plot(AirPassengers, main = 'Monthly totals of international passengers', xlab = 'Year', ylab = 'total number')
+#We could see an increasing trend with seasonality
+Air_pass <- window(cafe, start = 1954)
+#Considered from 1954 ,we see an increasing trend as well
+plot(Air_pass, main = 'Monthly totals of international passengers', xlab = 'Year', ylab = 'total number' )
+Acf(Air_pass, main = 'Acf Plot - Airpassenger from 1954')
+#we could see seasonality , so we shall use nsdiffs nd ndiffs function
+nsdiffs(Air_pass)
+ndiffs(Air_pass)
+ndiffs((diff(Air_pass,1)))
+tsdisplay(diff(Air_pass,1))
+fit <- auto.arima(Air_pass,trace=TRUE, stepwise = FALSE )
+fit
+attributes(fit)
+plot(forecast(fit,h=5,level=c(99.5)), main = 'Forecast of the ARIMA model', xlab = 'Year', ylab = 'total number')
+Acf(fit$residuals)
+Box.test(residuals(fit), lag=20, type="Ljung")
+plot.ts(residuals(fit))
+hist(fit$residuals)
+tsdiag(fit)
+```
+
